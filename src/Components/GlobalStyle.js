@@ -29,6 +29,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
   position:relative;
+	font-family: 'Roboto', sans-serif;
 }
 ol, ul {
 	list-style: none;
@@ -48,6 +49,9 @@ table {
 strong {
 	font-weight: bold;
 }
+
+*{box-sizing: border-box;}
+
 `;
 
 export default GlobalStyle;

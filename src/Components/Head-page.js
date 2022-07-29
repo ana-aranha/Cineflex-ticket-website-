@@ -17,7 +17,7 @@ const HeaderPage = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-weigth: 400;
+	font-weight: 400;
 	font-size: 34px;
 	color: #e8833a;
 `;
