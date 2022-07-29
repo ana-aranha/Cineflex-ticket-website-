@@ -1,30 +1,17 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import styled from "styled-components";
 
-export default function HomePage() {
-	const [movies, setMovies] = useState([]);
-
-	useEffect(() => {
-		const requisicao = axios.get(
-			"https://mock-api.driven.com.br/api/v7/cineflex/movies",
-		);
-
-		requisicao.then((resposta) => {
-			setMovies(resposta.data);
-		});
-	}, []);
-
+export default function HomePage({ movies }) {
 	return (
 		<Home>
-			<p>Selecione o Filme</p>
+			<h2>Selecione o Filme</h2>
 			{
 				<Movies>
 					{movies.map((item, index) => {
+						const idMovie = `/sessoes/:${item.id}`;
 						return (
 							<div key={index}>
-								<Link to="/sessoes">
+								<Link to={idMovie}>
 									<img src={item.posterURL} alt="movie" />
 								</Link>
 							</div>
@@ -43,7 +30,7 @@ export const Home = styled.div`
 	align-items: center;
 	justify-content: center;
 
-	p {
+	h2 {
 		font-size: 24px;
 		margin: 40px 0;
 		color: #293845;
@@ -59,6 +46,7 @@ const Movies = styled.div`
 	div {
 		box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
 		width: 42%;
+		max-width: 360px;
 		height: 25%;
 		padding: 8px;
 		margin-bottom: 5%;
