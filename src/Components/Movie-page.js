@@ -1,5 +1,5 @@
 import { Home } from "./Home-page";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -28,17 +28,22 @@ export default function MoviePage() {
 				<h2>Selecione o horário</h2>
 				{movieSession.length === 0
 					? ""
-					: /* (
-					<p>Foi</p>
-				) */ days.map((item, index) => {
+					: days.map((item, index) => {
 							return (
-								<Session key={index}>
+								<Session key={`session key${index}`}>
 									<p>
 										{item.weekday} - {item.date}
 									</p>
 									<div>
 										{item.showtimes.map((time, index) => {
-											return <Hour key={index}>{time.name}</Hour>;
+											return (
+												<Link
+													to={`/assentos/:${time.id}`}
+													key={`hour key${index}`}
+												>
+													<OrangeButton>{time.name}</OrangeButton>
+												</Link>
+											);
 										})}
 									</div>
 								</Session>
@@ -55,7 +60,7 @@ export default function MoviePage() {
 	);
 }
 
-const Session = styled.div`
+export const Session = styled.div`
 	font-size: 20px;
 	display: flex;
 	flex-direction: column;
@@ -74,7 +79,7 @@ const Session = styled.div`
 	}
 `;
 
-const Hour = styled.div`
+export const OrangeButton = styled.div`
 	background-color: #e8833a;
 	color: #ffffff;
 	border-radius: 3px;
@@ -83,12 +88,12 @@ const Hour = styled.div`
 	font-size: 18px;
 `;
 
-const Bottom = styled.div`
+export const Bottom = styled.div`
 	position: fixed;
 	bottom: 0;
 	background-color: #dfe6ed;
 	width: 100%;
-	height: 117px;
+	min-height: 117px;
 	padding: 14px 10px;
 	border: 1px solid #9eadba;
 	display: flex;
@@ -98,7 +103,7 @@ const Bottom = styled.div`
 	font-weight: 400;
 	font-size: 26px;
 
-	div {
+	div:nth-child(1) {
 		display: flex;
 		flex-direction: collum;
 		height: 89px;

@@ -35,6 +35,10 @@ export const Home = styled.div`
 		margin: 40px 0;
 		color: #293845;
 	}
+
+	a:link {
+		text-decoration: none;
+	}
 `;
 
 const Movies = styled.div`
