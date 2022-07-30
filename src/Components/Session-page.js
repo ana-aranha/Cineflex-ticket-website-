@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { Bottom, OrangeButton } from "./Movie-page";
+import { Bottom } from "./Movie-page";
 
 export default function SessionPage() {
 	const { idSessao } = useParams();
@@ -57,9 +57,13 @@ export default function SessionPage() {
 								<p>Indisponível</p>
 							</div>
 						</SeatStyle>
-						<OrangeButton>
-							<p>Reservar assento(s)</p>
-						</OrangeButton>
+						<Form>
+							<p>Nome do comprador</p>
+							<input type="text" />
+							<p>CPF do comprador</p>
+							<input type="number" />
+							<button type="submit">Reservar assento(s)</button>
+						</Form>
 					</Home>
 					<Bottom>
 						<div>
@@ -126,4 +130,30 @@ const Selected = styled.div`
 	border: 1px solid #1aae9e;
 	background-color: #8dd7cf;
 	margin-bottom: 5%;
+`;
+
+const Form = styled.form`
+	display: flex;
+	flex-direction: column;
+	margin: 40px 0;
+	width: 100%;
+	padding: 0 20px;
+
+	input {
+		margin: 10px 0;
+		width: 80%;
+		height: 40px;
+	}
+
+	button {
+		width: 100%;
+		height: 100%;
+		border: none;
+		background-color: #e8833a;
+		color: #ffffff;
+		border-radius: 3px;
+		margin: 20px 5% 20px 0;
+		padding: 8px 10px;
+		font-size: 18px;
+	}
 `;
