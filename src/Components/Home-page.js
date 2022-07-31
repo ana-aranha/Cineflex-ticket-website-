@@ -25,6 +25,7 @@ export default function HomePage({ movies }) {
 
 export const Home = styled.div`
 	margin-top: 70px;
+	margin-bottom: 120px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

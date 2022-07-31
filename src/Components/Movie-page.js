@@ -41,7 +41,9 @@ export default function MoviePage() {
 													to={`/assentos/:${time.id}`}
 													key={`hour key${index}`}
 												>
-													<OrangeButton>{time.name}</OrangeButton>
+													<OrangeButton AlignDiv={true}>
+														{time.name}
+													</OrangeButton>
 												</Link>
 											);
 										})}
@@ -76,6 +78,7 @@ export const Session = styled.div`
 	div {
 		display: flex;
 		margin-bottom: 10px;
+		gap: 5%;
 	}
 `;
 
@@ -83,9 +86,16 @@ export const OrangeButton = styled.div`
 	background-color: #e8833a;
 	color: #ffffff;
 	border-radius: 3px;
-	margin-right: 5%;
 	padding: 8px 10px;
 	font-size: 18px;
+	min-width: 50px;
+	display: flex;
+	justify-content: center;
+	margin: ${(props) => (props.AlignDiv ? "0" : "0 20vw")};
+
+	span {
+		color: #ffffff;
+	}
 `;
 
 export const Bottom = styled.div`

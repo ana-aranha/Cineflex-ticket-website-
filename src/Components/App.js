@@ -6,6 +6,7 @@ import Head from "./Head-page";
 import HomePage from "./Home-page";
 import MoviePage from "./Movie-page";
 import SessionPage from "./Session-page";
+import SucessPage from "./Sucess-page";
 
 export default function App() {
 	const [movies, setMovies] = useState([]);
@@ -29,6 +30,7 @@ export default function App() {
 					<Route path="/" element={<HomePage movies={movies} />} />
 					<Route path="/sessoes/:idMovie" element={<MoviePage />} />
 					<Route path="/assentos/:idSessao" element={<SessionPage />} />
+					<Route path="/sucesso" element={<SucessPage />} />
 				</Routes>
 			</BrowserRouter>
 		</>

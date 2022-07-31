@@ -1,5 +1,5 @@
 import { Home } from "./Home-page";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -62,7 +62,9 @@ export default function SessionPage() {
 							<input type="text" />
 							<p>CPF do comprador</p>
 							<input type="number" />
-							<button type="submit">Reservar assento(s)</button>
+							<Link to={"/sucesso"}>
+								<button type="submit">Reservar assento(s)</button>
+							</Link>
 						</Form>
 					</Home>
 					<Bottom>
