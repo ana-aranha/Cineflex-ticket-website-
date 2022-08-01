@@ -21,10 +21,10 @@ export default function SessionPage() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	console.log(movieSeat);
-
 	let seats = movieSeat.seats;
+	const [idsSelected, setIdsSelected] = useState([]);
 
+	console.log(movieSeat, idsSelected);
 	return (
 		<>
 			{movieSeat.length === 0 ? (
@@ -35,7 +35,14 @@ export default function SessionPage() {
 						<h2>Selecione o(s) assento(s)</h2>
 						<SeatStyle>
 							{seats.map((item, index) => {
-								return <AssentoTemplade item={item} key={`seatKey${index}`} />;
+								return (
+									<AssentoTemplade
+										item={item}
+										key={`seatKey${index}`}
+										idsSelected={idsSelected}
+										setIdsSelected={setIdsSelected}
+									/>
+								);
 							})}
 							<LabelTemplade />
 						</SeatStyle>
@@ -50,14 +57,22 @@ export default function SessionPage() {
 
 //Templades
 
-function AssentoTemplade({ item }) {
+function AssentoTemplade({ item, idsSelected, setIdsSelected }) {
 	const [selected, setSelected] = useState(false);
+
 	return (
 		<SeatOption colorSeat={item.isAvailable} isSelected={selected}>
 			<p
 				onClick={() => {
-					if (item.isAvailable === true) {
+					if (item.isAvailable === true && selected === false) {
 						setSelected(!selected);
+						let aux = [...idsSelected];
+						aux.push(item.id);
+						setIdsSelected(aux);
+					} else if (item.isAvailable === true && selected === true) {
+						setSelected(!selected);
+						let aux = idsSelected.filter((el) => el !== item.id);
+						setIdsSelected(aux);
 					} else {
 						alert("Esse assento não está disponível");
 					}
@@ -150,17 +165,15 @@ const SeatOption = styled.div`
 	max-width: 48px;
 	border-radius: 50px;
 	border: 1px solid
-		${
-			(props) => {
-				if (props.colorSeat === true && props.isSelected === false) {
-					return "#808f9d";
-				} else if (props.colorSeat === false) {
-					return "#F7C52B";
-				} else if (props.colorSeat === true && props.isSelected === true) {
-					return "#1aae9e";
-				}
-			} /* (props.colorSeat ? "#808f9d" : "#F7C52B") */
-		};
+		${(props) => {
+			if (props.colorSeat === true && props.isSelected === false) {
+				return "#808f9d";
+			} else if (props.colorSeat === false) {
+				return "#F7C52B";
+			} else if (props.colorSeat === true && props.isSelected === true) {
+				return "#1aae9e";
+			}
+		}};
 	background-color: ${(props) => {
 		if (props.colorSeat === true && props.isSelected === false) {
 			return "#c3cfd9";
