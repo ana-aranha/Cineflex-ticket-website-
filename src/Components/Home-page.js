@@ -1,11 +1,28 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import spinner from "./Assets/imgs/spinner.gif";
 
-export default function HomePage({ movies }) {
+export default function HomePage() {
+	const [movies, setMovies] = useState([]);
+
+	useEffect(() => {
+		const requisicao = axios.get(
+			"https://mock-api.driven.com.br/api/v7/cineflex/movies",
+		);
+
+		requisicao.then((resposta) => {
+			setMovies(resposta.data);
+		});
+	}, []);
+
 	return (
 		<Home>
 			<h2>Selecione o Filme</h2>
-			{
+			{movies.length === 0 ? (
+				<img src={spinner} alt="spinner" />
+			) : (
 				<Movies>
 					{movies.map((item, index) => {
 						const idMovie = `/sessoes/:${item.id}`;
@@ -18,7 +35,7 @@ export default function HomePage({ movies }) {
 						);
 					})}
 				</Movies>
-			}{" "}
+			)}
 		</Home>
 	);
 }

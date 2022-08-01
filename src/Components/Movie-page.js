@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import spinner from "./Assets/imgs/spinner.gif";
 
 export default function MoviePage() {
 	const { idMovie } = useParams();
@@ -26,37 +27,46 @@ export default function MoviePage() {
 		<>
 			<Home>
 				<h2>Selecione o horário</h2>
-				{movieSession.length === 0
-					? ""
-					: days.map((item, index) => {
-							return (
-								<Session key={`session key${index}`}>
-									<p>
-										{item.weekday} - {item.date}
-									</p>
-									<div>
-										{item.showtimes.map((time, index) => {
-											return (
-												<Link
-													to={`/assentos/:${time.id}`}
-													key={`hour key${index}`}
-												>
-													<OrangeButton AlignDiv={true}>
-														{time.name}
-													</OrangeButton>
-												</Link>
-											);
-										})}
-									</div>
-								</Session>
-							);
-					  })}
+				{movieSession.length === 0 ? (
+					<img src={spinner} alt="spinner" />
+				) : (
+					days.map((item, index) => {
+						return (
+							<Session key={`session key${index}`}>
+								<p>
+									{item.weekday} - {item.date}
+								</p>
+								<div>
+									{item.showtimes.map((time, index) => {
+										return (
+											<Link
+												to={`/assentos/:${time.id}`}
+												key={`hour key${index}`}
+											>
+												<OrangeButton AlignDiv={true}>{time.name}</OrangeButton>
+											</Link>
+										);
+									})}
+								</div>
+							</Session>
+						);
+					})
+				)}
 			</Home>
 			<Bottom>
-				<div>
-					<img src={movieSession.posterURL} alt="movie" />
-				</div>
-				<p>{movieSession.title}</p>
+				{movieSession.length === 0 ? (
+					<div>
+						{" "}
+						<img src={spinner} alt="spinner" />
+					</div>
+				) : (
+					<>
+						<div>
+							<img src={movieSession.posterURL} alt="movie" />
+						</div>
+						<p>{movieSession.title}</p>
+					</>
+				)}
 			</Bottom>
 		</>
 	);
@@ -82,7 +92,7 @@ export const Session = styled.div`
 	}
 `;
 
-export const OrangeButton = styled.div`
+const OrangeButton = styled.div`
 	background-color: #e8833a;
 	color: #ffffff;
 	border-radius: 3px;
@@ -91,7 +101,6 @@ export const OrangeButton = styled.div`
 	min-width: 50px;
 	display: flex;
 	justify-content: center;
-	margin: ${(props) => (props.AlignDiv ? "0" : "0 20vw")};
 
 	span {
 		color: #ffffff;

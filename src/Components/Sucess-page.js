@@ -1,10 +1,9 @@
-import { OrangeButton } from "./Movie-page";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { ButtonStyle } from "./Session-templades";
 
 export default function SucessPage() {
 	const { state } = useLocation();
-	console.log(state);
 	return (
 		<SucessStyle>
 			<h3>Pedido feito com sucesso!</h3>
@@ -18,13 +17,13 @@ export default function SucessPage() {
 				return <p key={`seats${index}`}>Assento {el}</p>;
 			})}
 			<h4>Comprador</h4>
-			<p>Nome:{state.buyer}</p>
+			<p>Nome: {state.buyer}</p>
 			<p>CPF: {state.buyerCpf}</p>
-			<Link to="/">
-				<OrangeButton alignDiv={true}>
-					<span>Voltar para Home</span>
-				</OrangeButton>
-			</Link>
+			<ButtonStyle>
+				<Link to="/">
+					<button>Voltar para Home</button>
+				</Link>
+			</ButtonStyle>
 		</SucessStyle>
 	);
 }
@@ -49,7 +48,7 @@ const SucessStyle = styled.div`
 		font-size: 24px;
 		font-weight: 700;
 		color: #293845;
-		margin: 10px 0;
+		margin: 20px 0;
 	}
 
 	p {
