@@ -1,5 +1,5 @@
 import { Home } from "./Home-page";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -23,8 +23,9 @@ export default function SessionPage() {
 
 	let seats = movieSeat.seats;
 	const [idsSelected, setIdsSelected] = useState([]);
+	const [seatsSelected, setSeatsSelected] = useState([]);
 
-	console.log(movieSeat, idsSelected);
+	console.log(movieSeat, idsSelected, seatsSelected);
 	return (
 		<>
 			{movieSeat.length === 0 ? (
@@ -41,12 +42,18 @@ export default function SessionPage() {
 										key={`seatKey${index}`}
 										idsSelected={idsSelected}
 										setIdsSelected={setIdsSelected}
+										seatsSelected={seatsSelected}
+										setSeatsSelected={setSeatsSelected}
 									/>
 								);
 							})}
 							<LabelTemplade />
 						</SeatStyle>
-						<FormTemplade />
+						<FormTemplade
+							idsSelected={idsSelected}
+							seatsSelected={seatsSelected}
+							movieSeat={movieSeat}
+						/>
 					</Home>
 					<BottomTemplade movieSeat={movieSeat} />
 				</>
@@ -57,7 +64,13 @@ export default function SessionPage() {
 
 //Templades
 
-function AssentoTemplade({ item, idsSelected, setIdsSelected }) {
+function AssentoTemplade({
+	item,
+	idsSelected,
+	setIdsSelected,
+	seatsSelected,
+	setSeatsSelected,
+}) {
 	const [selected, setSelected] = useState(false);
 
 	return (
@@ -69,10 +82,15 @@ function AssentoTemplade({ item, idsSelected, setIdsSelected }) {
 						let aux = [...idsSelected];
 						aux.push(item.id);
 						setIdsSelected(aux);
+						let newAux = [...seatsSelected];
+						newAux.push(item.name);
+						setSeatsSelected(newAux);
 					} else if (item.isAvailable === true && selected === true) {
 						setSelected(!selected);
 						let aux = idsSelected.filter((el) => el !== item.id);
 						setIdsSelected(aux);
+						let newAux = seatsSelected.filter((el) => el !== item.name);
+						setSeatsSelected(newAux);
 					} else {
 						alert("Esse assento não está disponível");
 					}
@@ -103,16 +121,49 @@ function LabelTemplade() {
 	);
 }
 
-function FormTemplade() {
+function FormTemplade({ idsSelected, seatsSelected, movieSeat }) {
+	const [buyerName, setBuyerName] = useState("");
+	const [cpf, setCpf] = useState("");
+	const navigate = useNavigate();
+
+	function defineBuyerInfo(event) {
+		event.preventDefault();
+		if (buyerName === "" || cpf === "") {
+			alert("preencha seus dados corretamente");
+		} else if (idsSelected.length === 0) {
+			alert("Selecione pelo menos um assento");
+		} else {
+			console.log(buyerName, cpf, idsSelected);
+			navigate("/sucesso", {
+				state: {
+					buyer: buyerName,
+					seats: { seatsSelected },
+					buyerCpf: cpf,
+					title: movieSeat.movie.title,
+					date: movieSeat.day.date,
+					hour: movieSeat.name,
+				},
+			});
+		}
+	}
+
 	return (
-		<Form>
+		<Form onSubmit={defineBuyerInfo}>
 			<p>Nome do comprador</p>
-			<input type="text" />
+			<input
+				type="text"
+				placeholder="Digite seu nome..."
+				value={buyerName}
+				onChange={(e) => setBuyerName(e.target.value)}
+			/>
 			<p>CPF do comprador</p>
-			<input type="number" />
-			<Link to={"/sucesso"}>
-				<button type="submit">Reservar assento(s)</button>
-			</Link>
+			<input
+				type="number"
+				placeholder="Digite seu CPF..."
+				value={cpf}
+				onChange={(e) => setCpf(e.target.value)}
+			/>
+			<button type="submit">Reservar assento(s)</button>
 		</Form>
 	);
 }

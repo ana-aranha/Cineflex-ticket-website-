@@ -1,19 +1,25 @@
 import { OrangeButton } from "./Movie-page";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 export default function SucessPage() {
+	const { state } = useLocation();
+	console.log(state);
 	return (
 		<SucessStyle>
 			<h3>Pedido feito com sucesso!</h3>
 			<h4>Filme e Sessão</h4>
-			<p>Filme</p>
-			<p>Data</p>
+			<p>{state.title}</p>
+			<p>
+				{state.date} {state.hour}
+			</p>
 			<h4>Ingressos</h4>
-			<p>Assento</p>
+			{state.seats.seatsSelected.map((el, index) => {
+				return <p key={`seats${index}`}>Assento {el}</p>;
+			})}
 			<h4>Comprador</h4>
-			<p>Nome:</p>
-			<p>CPF</p>
+			<p>Nome:{state.buyer}</p>
+			<p>CPF: {state.buyerCpf}</p>
 			<Link to="/">
 				<OrangeButton alignDiv={true}>
 					<span>Voltar para Home</span>
