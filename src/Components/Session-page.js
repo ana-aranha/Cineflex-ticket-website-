@@ -134,16 +134,26 @@ function FormTemplade({ idsSelected, seatsSelected, movieSeat }) {
 			alert("Selecione pelo menos um assento");
 		} else {
 			console.log(buyerName, cpf, idsSelected);
-			navigate("/sucesso", {
-				state: {
-					buyer: buyerName,
-					seats: { seatsSelected },
-					buyerCpf: cpf,
-					title: movieSeat.movie.title,
-					date: movieSeat.day.date,
-					hour: movieSeat.name,
+			const requisicao = axios.post(
+				"https://mock-api.driven.com.br/api/v7/cineflex/seats/book-many",
+				{
+					ids: idsSelected,
+					name: buyerName,
+					cpf: cpf,
 				},
-			});
+			);
+			requisicao.then(
+				navigate("/sucesso", {
+					state: {
+						buyer: buyerName,
+						seats: { seatsSelected },
+						buyerCpf: cpf,
+						title: movieSeat.movie.title,
+						date: movieSeat.day.date,
+						hour: movieSeat.name,
+					},
+				}),
+			);
 		}
 	}
 
