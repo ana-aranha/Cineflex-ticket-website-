@@ -35,54 +35,90 @@ export default function SessionPage() {
 						<h2>Selecione o(s) assento(s)</h2>
 						<SeatStyle>
 							{seats.map((item, index) => {
-								return (
-									<SeatOption
-										colorSeat={item.isAvailable}
-										key={`seatKey${index}`}
-									>
-										<p>{item.name}</p>
-									</SeatOption>
-								);
+								return <AssentoTemplade item={item} key={`seatKey${index}`} />;
 							})}
-							<div>
-								<Selected></Selected>
-								<p>Selecionado</p>
-							</div>
-							<div>
-								<SeatOption colorSeat={true}></SeatOption>
-								<p>Disponível</p>
-							</div>
-							<div>
-								<SeatOption colorSeat={false}></SeatOption>
-								<p>Indisponível</p>
-							</div>
+							<LabelTemplade />
 						</SeatStyle>
-						<Form>
-							<p>Nome do comprador</p>
-							<input type="text" />
-							<p>CPF do comprador</p>
-							<input type="number" />
-							<Link to={"/sucesso"}>
-								<button type="submit">Reservar assento(s)</button>
-							</Link>
-						</Form>
+						<FormTemplade />
 					</Home>
-					<Bottom>
-						<div>
-							<img src={movieSeat.movie.posterURL} alt="movie" />
-						</div>
-						<TitleInfo>
-							<p>{movieSeat.movie.title}</p>
-							<p>
-								{movieSeat.day.weekday} - {movieSeat.day.date}
-							</p>
-						</TitleInfo>
-					</Bottom>
+					<BottomTemplade movieSeat={movieSeat} />
 				</>
 			)}
 		</>
 	);
 }
+
+//Templades
+
+function AssentoTemplade({ item }) {
+	const [selected, setSelected] = useState(false);
+	return (
+		<SeatOption colorSeat={item.isAvailable} isSelected={selected}>
+			<p
+				onClick={() => {
+					if (item.isAvailable === true) {
+						setSelected(!selected);
+					} else {
+						alert("Esse assento não está disponível");
+					}
+				}}
+			>
+				{item.name}
+			</p>
+		</SeatOption>
+	);
+}
+
+function LabelTemplade() {
+	return (
+		<>
+			<div>
+				<SeatOption colorSeat={true} isSelected={true}></SeatOption>
+				<p>Selecionado</p>
+			</div>
+			<div>
+				<SeatOption colorSeat={true} isSelected={false}></SeatOption>
+				<p>Disponível</p>
+			</div>
+			<div>
+				<SeatOption colorSeat={false}></SeatOption>
+				<p>Indisponível</p>
+			</div>
+		</>
+	);
+}
+
+function FormTemplade() {
+	return (
+		<Form>
+			<p>Nome do comprador</p>
+			<input type="text" />
+			<p>CPF do comprador</p>
+			<input type="number" />
+			<Link to={"/sucesso"}>
+				<button type="submit">Reservar assento(s)</button>
+			</Link>
+		</Form>
+	);
+}
+
+function BottomTemplade({ movieSeat }) {
+	return (
+		<Bottom>
+			<div>
+				<img src={movieSeat.movie.posterURL} alt="movie" />
+			</div>
+			<TitleInfo>
+				<p>{movieSeat.movie.title}</p>
+				<p>
+					{movieSeat.day.weekday} - {movieSeat.name}
+				</p>
+			</TitleInfo>
+		</Bottom>
+	);
+}
+
+//Styled components
 
 const TitleInfo = styled.div`
 	display: flex;
@@ -113,24 +149,32 @@ const SeatOption = styled.div`
 	width: 7vw;
 	max-width: 48px;
 	border-radius: 50px;
-	border: 1px solid ${(props) => (props.colorSeat ? "#808f9d" : "#F7C52B")};
-	background-color: ${(props) => (props.colorSeat ? `#c3cfd9` : `#FBE192`)};
+	border: 1px solid
+		${
+			(props) => {
+				if (props.colorSeat === true && props.isSelected === false) {
+					return "#808f9d";
+				} else if (props.colorSeat === false) {
+					return "#F7C52B";
+				} else if (props.colorSeat === true && props.isSelected === true) {
+					return "#1aae9e";
+				}
+			} /* (props.colorSeat ? "#808f9d" : "#F7C52B") */
+		};
+	background-color: ${(props) => {
+		if (props.colorSeat === true && props.isSelected === false) {
+			return "#c3cfd9";
+		} else if (props.colorSeat === false) {
+			return "#FBE192";
+		} else if (props.colorSeat === true && props.isSelected === true) {
+			return "#8dd7cf";
+		}
+	}};
 	font-size: 12px;
 	font-weight: 400;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 5%;
-`;
-
-const Selected = styled.div`
-	height: 7vw;
-	max-height: 48px;
-	width: 7vw;
-	max-width: 48px;
-	border-radius: 50px;
-	border: 1px solid #1aae9e;
-	background-color: #8dd7cf;
 	margin-bottom: 5%;
 `;
 
