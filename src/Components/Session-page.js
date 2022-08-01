@@ -74,30 +74,30 @@ function AssentoTemplade({
 	const [selected, setSelected] = useState(false);
 
 	return (
-		<SeatOption colorSeat={item.isAvailable} isSelected={selected}>
-			<p
-				onClick={() => {
-					if (item.isAvailable === true && selected === false) {
-						setSelected(!selected);
-						let aux = [...idsSelected];
-						aux.push(item.id);
-						setIdsSelected(aux);
-						let newAux = [...seatsSelected];
-						newAux.push(item.name);
-						setSeatsSelected(newAux);
-					} else if (item.isAvailable === true && selected === true) {
-						setSelected(!selected);
-						let aux = idsSelected.filter((el) => el !== item.id);
-						setIdsSelected(aux);
-						let newAux = seatsSelected.filter((el) => el !== item.name);
-						setSeatsSelected(newAux);
-					} else {
-						alert("Esse assento não está disponível");
-					}
-				}}
-			>
-				{item.name}
-			</p>
+		<SeatOption
+			colorSeat={item.isAvailable}
+			isSelected={selected}
+			onClick={() => {
+				if (item.isAvailable === true && selected === false) {
+					setSelected(!selected);
+					let aux = [...idsSelected];
+					aux.push(item.id);
+					setIdsSelected(aux);
+					let newAux = [...seatsSelected];
+					newAux.push(item.name);
+					setSeatsSelected(newAux);
+				} else if (item.isAvailable === true && selected === true) {
+					setSelected(!selected);
+					let aux = idsSelected.filter((el) => el !== item.id);
+					setIdsSelected(aux);
+					let newAux = seatsSelected.filter((el) => el !== item.name);
+					setSeatsSelected(newAux);
+				} else {
+					alert("Esse assento não está disponível");
+				}
+			}}
+		>
+			<p>{item.name}</p>
 		</SeatOption>
 	);
 }
@@ -225,6 +225,7 @@ const SeatOption = styled.div`
 	width: 7vw;
 	max-width: 48px;
 	border-radius: 50px;
+	cursor: pointer;
 	border: 1px solid
 		${(props) => {
 			if (props.colorSeat === true && props.isSelected === false) {
